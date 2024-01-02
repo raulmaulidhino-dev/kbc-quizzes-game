@@ -57,7 +57,7 @@ let KBCQuestions = [
     "What is the capital of South Korea?",
     "In which country is the famous archaeological site of Angkor Wat located?",
     "What is the tallest mountain in Asia and the world? (Above the sea level)",
-    "Which Asian country is known for its unique shape resembling a boot?",
+    "Which European country is known for its unique shape resembling a boot?",
     "Which river flows through both India and Bangladesh and is known as the 'Sorrow of Bengal'?",
     "What is the currency of Saudi Arabia?",
     "Which Asian city is often referred to as the 'Pearl of the Orient'?",
@@ -231,6 +231,7 @@ let KBCAnswers = [
     "Ringgit"
 ];
 
+// Shuffle the Array
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -238,6 +239,7 @@ function shuffleArray(array) {
   }
 }
 
+// Function to show a question from the array lists
 function showOneQuestion() {
   shuffleArray(indexKBC);
   indexSelected = indexKBC[Math.floor(Math.random() * indexKBC.length)];
@@ -255,11 +257,12 @@ function showOneQuestion() {
     optionsArray[i].textContent = optionsSelected[i];
   }
   
-  // Test
+  // Testing Mode
   angka++;
   console.log(angka);
 }
 
+// Array for selecting indexes
 let indexKBC = [];
 
 for (let i = KBCQuestions.length - 1; i >= 0; i--) {
@@ -283,6 +286,7 @@ let prizeIndex = 0;
 
 let footerSection = document.getElementById("footer_section");
 let nextButton = document.getElementById("next_button");
+let resetButton = document.getElementById("reset_button");
 let answerChecker = document.getElementById("answer_checker");
 
 let rupeeSymbol = "\u20B9";
@@ -334,6 +338,16 @@ nextButton.addEventListener("click",
     answerChecker.classList.remove("show-wrong-answer-checker");
     footerSection.classList.remove("show-footer-section");
     showOneQuestion();
+  });
+  
+resetButton.addEventListener("click", 
+  () =>{
+    let isRestarted = confirm("Are you sure that you want to restart this quiz?");
+    if (isRestarted) {
+      prizeIndex = 0;
+      prizeStatus.textContent = `${rupeeSymbol}${prizeList[prizeIndex].toLocaleString("en-IN")}`;
+      
+    }
   });
 
 let optionsArray = [];
