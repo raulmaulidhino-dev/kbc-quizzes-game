@@ -1,4 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Dosis&family=Playpen+Sans:wght@600&display=swap');
+@font-face {
+  font-family: 'Franchise';
+  src: url('font/Franchise.ttf');
+  font-size: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Catamaran';
+  src: url('font/Catamaran-Regular.ttf');
+}
 
 :root {
   --darkPurple: rgba(59,11,110,255);
@@ -6,7 +16,6 @@
   --brown: rgb(156,108,92);
   --white: rgb(255, 255, 255);
   font-size: 16px;
-  font-family: 'Dosis', sans-serif;
 }
 
 *,
@@ -15,50 +24,52 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Catamaran', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+h1 {
+  font-size: clamp(3.75rem, 4vw, 6.25rem);
+}
+
+.responsive-text,
+#status_section > section,
+#footer_section > button {
+  font-size: clamp(1.25rem, 1vw, 1.5rem);
 }
 
 body {
   background-color: var(--darkPurple);
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  place-items: center;
+  cursor: default;
+  user-select: none;
 }
 
 #main_container {
-  flex: 0 1 max(20rem, 40vw);
+  position: relative;
+  display: grid;
+  place-items: center;
 }
 
 #quizz_container {
   background-color: var(--white);
-  padding: 2rem 1.5rem;
+  width: clamp(20rem, 30vw, 43rem);
+  padding: max(2.5rem, 3.5vw) max(0.75rem, 2vw);
   border-radius: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1.75rem;
-  overflow: scroll;
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 1.75rem;
 }
 
 #quizz_container > * {
-  flex-grow: 1;
   width: 85%;
 }
 
 #main_heading {
   text-align: center;
-  font-family: 'Playpen Sans', cursive;
-  background: linear-gradient(90deg, var(--darkPurple), var(--lightPurple));
-  background-size: 0% 3px;
-  background-size: 0% 3px;
-  background-repeat: no-repeat;
-  background-position: left bottom;
-  transition: background-size 500ms ease;
-}
-
-#main_heading:hover {
-  background-size: 100% 3px;
+  font-family: 'Franchise', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 #status_section {
@@ -100,13 +111,6 @@ body {
   text-align: center;
 }
 
-/*
-#questions_and_options div:last-child { Answer Checker
-  display: none;
-  font-weight: 800;
-}
-*/
-
 #answer_checker {
   display: none;
   font-weight: 800;
@@ -129,7 +133,7 @@ body {
 }
 
 #options_container > *.mark-correct-option {
-  --correct-mark: rgb(0, 135 ,0);
+  --correct-mark: rgb(0, 135, 0);
   color: white;
   background-color: var(--correct-mark);
   border: solid 1px var(--correct-mark);
@@ -182,7 +186,7 @@ body {
   padding: 1rem;
   border-radius: 10px;
   font-size: 1rem;
-  font-weight: 800;
+  font-weight: 700;
   font-family: inherit;
   flex-grow: 1;
 }
