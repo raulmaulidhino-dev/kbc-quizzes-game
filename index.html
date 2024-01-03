@@ -11,12 +11,16 @@
     <div id="quizz_container">
 	    <h1 id="main_heading">KBC GAME!!</h1>
 	    <!-- Status Section -->
-	    <section id="status_section">
+	    <section id="status_section" class="hide">
 	      <section id="prize_status">₹0</section>
 	      <section id="time_status">00:00</section>
 	    </section>
+		<!-- Captions Before Getting Started -->
+		<section id="startup_caption" class="responsive-text">
+			Enjoy the game!
+		</section>
 	    <!-- Questions and Options Section -->
-	    <section id="questions_and_options">
+	    <section id="questions_and_options" class="hide">
 	      <div id="question" class="responsive-text">Question Here...</div>
 	      <ul id="options_container">
 	        <li id="option_A" class="option responsive-text">Option A</li>
@@ -26,6 +30,12 @@
 	      </ul>
 	      <div id="answer_checker" class="responsive-text">Status</div>
 	    </section>
+		<!-- Start Quiz Button -->
+		<section id="start_quiz">
+			<button id="start_button">
+				Play Quiz!
+			</button>
+		</section>
 	    <!-- Quizz Footer Section -->
 	    <section id="footer_section">
 	      <button id="reset_button">Reset</button>
