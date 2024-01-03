@@ -231,16 +231,86 @@ let KBCAnswers = [
     "Ringgit"
 ];
 
-// Shuffle the Array
-function shuffleArray(array) {
+// All necessary items and elements
+let indexKBC = [];
+
+for (let i = KBCQuestions.length - 1; i >= 0; i--) {
+  indexKBC.push(i);
+}
+
+let questionSelected = "";
+let optionsSelected = [];
+let answerSelected = "";
+let indexSelected = 0;
+
+let startupCaption = document.getElementById("startup_caption");
+let questionsAndOpptions = document.getElementById("questions_and_options");
+let questionElement = document.getElementById("question");
+let optionA = document.getElementById("option_A");
+let optionB = document.getElementById("option_B");
+let optionC = document.getElementById("option_C");
+let optionD = document.getElementById("option_D");
+
+let optionsArray = [];
+
+optionsArray.push(optionA);
+optionsArray.push(optionB);
+optionsArray.push(optionC);
+optionsArray.push(optionD);
+
+let statusSection = document.getElementById("status_section");
+let prizeStatus = document.getElementById("prize_status");
+let prizeList = [0, 1000, 2000, 3000, 5000, 10000, 20000, 40000, 80000, 160000, 320000, 640000, 1250000, 2500000, 5000000, 7500000, "1 Crore", "7.5 Crore"];
+let prizeIndex = 0;
+let currentPrize = 0;
+
+let timeStatus = document.getElementById("time_status");
+let duration = [45, 60];
+
+const footerSection = document.getElementById("footer_section");
+const nextButton = document.getElementById("next_button");
+const resetButton = document.getElementById("reset_button");
+const startButton = document.getElementById("start_button");
+const answerChecker = document.getElementById("answer_checker");
+
+const rupeeSymbol = "\u20B9";
+const infinitySymbol = "\u221E";
+
+const options = document.querySelectorAll(".option");
+
+
+// Shuffle an Array
+let shuffleArray = array => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
 
-// Function to show a question from the array lists
-function showOneQuestion() {
+
+// Start and Stop Time
+let intervalId;
+let seconds = 0;
+
+let startTime = (s) => {
+  timeStatus.textContent = `00:${String(s).padStart(2, '0')}`;
+  intervalId = setInterval(() => {
+    timeStatus.textContent = `00:${String(s - 1).padStart(2, '0')}`;
+    if (s <= 0) {
+      clearInterval(intervalId);
+      alert("Time\'s Up!");
+      prizeIndex = 0;
+      currentPrize = prizeList[prizeIndex];
+      timeStatus.textContent = "00:00";
+      s = duration[0];
+      showOneQuestion();
+    }
+    s--;
+  }, 1000);
+}
+
+// Show one question from the array lists
+let showOneQuestion = () => {
   shuffleArray(indexKBC);
   indexSelected = indexKBC[Math.floor(Math.random() * indexKBC.length)];
   indexKBC.splice(indexKBC.indexOf(indexSelected), 1);
@@ -256,42 +326,30 @@ function showOneQuestion() {
   for (let i = 0; i < optionsArray.length; i++) {
     optionsArray[i].textContent = optionsSelected[i];
   }
-  
-  // Testing Mode
+
+  if (currentPrize >= 0 && currentPrize <= 10000) {
+    seconds = duration[0];
+    startTime(seconds); 
+  } else if (currentPrize >= 10001 && currentPrize <= 320000) {
+    seconds = duration[1];
+    startTime(seconds); 
+  } else {
+    timeStatus.textContent = infinitySymbol;
+  } 
+  // Testing Only
   angka++;
   console.log(angka);
 }
 
-// Array for selecting indexes
-let indexKBC = [];
-
-for (let i = KBCQuestions.length - 1; i >= 0; i--) {
-  indexKBC.push(i);
-}
-
-let questionSelected = "";
-let optionsSelected = [];
-let answerSelected = "";
-let indexSelected = 0;
-
-let questionElement = document.getElementById("question");
-let optionA = document.getElementById("option_A");
-let optionB = document.getElementById("option_B");
-let optionC = document.getElementById("option_C");
-let optionD = document.getElementById("option_D");
-
-let prizeStatus = document.getElementById("prize_status");
-let prizeList = [0, 1000, 2000, 3000, 5000, 10000, 20000, 40000, 80000, 160000, 320000, 640000, 1250000, 2500000, 5000000, 7500000, "1 Crore", "7.5 Crore"];
-let prizeIndex = 0;
-
-let footerSection = document.getElementById("footer_section");
-let nextButton = document.getElementById("next_button");
-let resetButton = document.getElementById("reset_button");
-let answerChecker = document.getElementById("answer_checker");
-
-let rupeeSymbol = "\u20B9";
-
-let options = document.querySelectorAll(".option");
+// If the Quiz/Game is started
+startButton.addEventListener("click",
+() => {
+  startupCaption.classList.add("hide");
+  startButton.classList.add("hide");
+  statusSection.classList.remove("hide");
+  questionsAndOpptions.classList.remove("hide");
+  showOneQuestion();
+});
 
 for (let i = 0; i < options.length; i++) {
   options[i].addEventListener("click",
@@ -301,7 +359,7 @@ for (let i = 0; i < options.length; i++) {
       answerChecker.classList.remove("show-correct-answer-checker", "show-wrong-answer-checker");
       options[i].classList.add("hide");
     }
-    
+    clearInterval(intervalId);
     options[i].classList.remove("hide");
     if (options[i].textContent == answerSelected) {
       options[i].classList.add("mark-correct-option");
@@ -309,24 +367,27 @@ for (let i = 0; i < options.length; i++) {
       answerChecker.textContent = "Correct!";
       footerSection.classList.add("show-footer-section");
       prizeIndex++;
-      prizeStatus.textContent = `${rupeeSymbol}${prizeList[prizeIndex].toLocaleString("en-IN")}`;
+      currentPrize = prizeList[prizeIndex];
+      prizeStatus.textContent = `${rupeeSymbol}${currentPrize.toLocaleString("en-IN")}`;
       if (prizeIndex == (prizeList.length - 1)) {
         window.alert(`YOU WON! AND GOT ${prizeList[prizeIndex].toLocaleString("en-IN")}!`);
         prizeIndex = 0;
-        prizeStatus.textContent = `${rupeeSymbol}${prizeList[prizeIndex].toLocaleString("en-IN")}`;
+        currentPrize = prizeList[prizeIndex];
+        prizeStatus.textContent = `${rupeeSymbol}${currentPrize.toLocaleString("en-IN")}`;
       }
-      
     } else {
       options[i].classList.add("mark-wrong-option");
       answerChecker.classList.add("show-wrong-answer-checker");
       answerChecker.textContent = "Wrong!";
       footerSection.classList.add("show-footer-section");
       prizeIndex = 0;
-      prizeStatus.textContent = `${rupeeSymbol}${prizeList[prizeIndex].toLocaleString("en-IN")}`;
+      currentPrize = prizeList[prizeIndex];
+      prizeStatus.textContent = `${rupeeSymbol}${currentPrize.toLocaleString("en-IN")}`;
     }
   });
 }
 
+// When the Next Button is clicked
 nextButton.addEventListener("click", 
   () => {
     for (let i = 0; i < options.length; i++) {
@@ -339,7 +400,8 @@ nextButton.addEventListener("click",
     footerSection.classList.remove("show-footer-section");
     showOneQuestion();
   });
-  
+
+// When the Reset Button is clicked  
 resetButton.addEventListener("click", 
   () =>{
     let isRestarted = confirm("Are you sure that you want to restart this quiz?");
@@ -349,12 +411,3 @@ resetButton.addEventListener("click",
       
     }
   });
-
-let optionsArray = [];
-
-optionsArray.push(optionA);
-optionsArray.push(optionB);
-optionsArray.push(optionC);
-optionsArray.push(optionD);
-
-showOneQuestion();
