@@ -1,4 +1,3 @@
-let angka = 0;
 // KBC Game, Questions & Answers Database
 let KBCQuestions = [
     "What is the national flower of India?",
@@ -234,15 +233,12 @@ let KBCAnswers = [
 // All necessary items and elements
 let indexKBC = [];
 
-for (let i = KBCQuestions.length - 1; i >= 0; i--) {
-  indexKBC.push(i);
-}
-
 let questionSelected = "";
 let optionsSelected = [];
 let answerSelected = "";
 let indexSelected = 0;
 
+// Caption, Question and Options
 let startupCaption = document.getElementById("startup_caption");
 let questionsAndOpptions = document.getElementById("questions_and_options");
 let questionElement = document.getElementById("question");
@@ -258,49 +254,75 @@ optionsArray.push(optionB);
 optionsArray.push(optionC);
 optionsArray.push(optionD);
 
+const options = document.querySelectorAll(".option");
+
+// Time & Prize Status Elements
 let statusSection = document.getElementById("status_section");
+// Prize
 let prizeStatus = document.getElementById("prize_status");
 let prizeList = [0, 1000, 2000, 3000, 5000, 10000, 20000, 40000, 80000, 160000, 320000, 640000, 1250000, 2500000, 5000000, 7500000, "1 Crore", "7.5 Crore"];
 let prizeIndex = 0;
 let currentPrize = 0;
 
+// Time
 let timeStatus = document.getElementById("time_status");
 let duration = [45, 60];
 
+// Footer Section
 const footerSection = document.getElementById("footer_section");
+// Buttons
 const nextButton = document.getElementById("next_button");
 const resetButton = document.getElementById("reset_button");
 const startButton = document.getElementById("start_button");
+// Answer Checker
 const answerChecker = document.getElementById("answer_checker");
 
+// Icon/Symbol Resources
 const rupeeSymbol = "\u20B9";
 const infinitySymbol = "\u221E";
 
-const options = document.querySelectorAll(".option");
+// Reset the Prize
+const resetPrize = () => {
+  prizeIndex = 0;
+  currentPrize = prizeList[prizeIndex];
+  prizeStatus.textContent = `${rupeeSymbol}${currentPrize.toLocaleString("en-IN")}`;
+}
 
-
-// Shuffle an Array
-let shuffleArray = array => {
+// Shuffling an Array
+const shuffleArray = array => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
 
+// Filling an Array
+const fillArray = (arr, start, end) => {
+  for (let i = start; i < end;  i++) {
+    arr.push(i);
+  }
+}
+
+// Clearing an Array
+const clearArray = arr => {
+  arr.splice(0, arr.length);
+}
+
+// Filling Array for IndexKBC for the first time
+fillArray(indexKBC, 0, KBCQuestions.length);
 
 // Start and Stop Time
 let intervalId;
 let seconds = 0;
 
-let startTime = (s) => {
+let startTime = s => {
   timeStatus.textContent = `00:${String(s).padStart(2, '0')}`;
   intervalId = setInterval(() => {
     timeStatus.textContent = `00:${String(s - 1).padStart(2, '0')}`;
     if (s <= 0) {
       clearInterval(intervalId);
       alert("Time\'s Up!");
-      prizeIndex = 0;
-      currentPrize = prizeList[prizeIndex];
+      resetPrize();
       timeStatus.textContent = "00:00";
       s = duration[0];
       showOneQuestion();
@@ -309,38 +331,52 @@ let startTime = (s) => {
   }, 1000);
 }
 
-// Show one question from the array lists
+// Showing one question from the array lists
 let showOneQuestion = () => {
-  shuffleArray(indexKBC);
-  indexSelected = indexKBC[Math.floor(Math.random() * indexKBC.length)];
-  indexKBC.splice(indexKBC.indexOf(indexSelected), 1);
+  if (indexKBC.length > 0) {
+    shuffleArray(indexKBC);
+    indexSelected = indexKBC[Math.floor(Math.random() * indexKBC.length)];
+    indexKBC.splice(indexKBC.indexOf(indexSelected), 1);
   
-  questionSelected = KBCQuestions[indexSelected];
-  optionsSelected = KBCOptions[indexSelected];
-  answerSelected = KBCAnswers[indexSelected];
+    questionSelected = KBCQuestions[indexSelected];
+    optionsSelected = KBCOptions[indexSelected];
+    answerSelected = KBCAnswers[indexSelected];
   
-  questionElement.textContent = questionSelected
+    questionElement.textContent = questionSelected;
   
-  shuffleArray(optionsSelected);
+    shuffleArray(optionsSelected);
   
-  for (let i = 0; i < optionsArray.length; i++) {
-    optionsArray[i].textContent = optionsSelected[i];
-  }
+    for (let i = 0; i < optionsArray.length; i++) {
+      optionsArray[i].textContent = optionsSelected[i];
+    }
 
-  if (currentPrize >= 0 && currentPrize <= 10000) {
-    seconds = duration[0];
-    startTime(seconds); 
-  } else if (currentPrize >= 10001 && currentPrize <= 320000) {
-    seconds = duration[1];
-    startTime(seconds); 
+    if (currentPrize >= 0 && currentPrize <= 10000) {
+      seconds = duration[0];
+      startTime(seconds); 
+    } else if (currentPrize >= 10001 && currentPrize <= 320000) {
+      seconds = duration[1];
+      startTime(seconds); 
+    } else {
+      timeStatus.textContent = infinitySymbol;
+    }
   } else {
-    timeStatus.textContent = infinitySymbol;
-  } 
-  // Testing Only
-  angka++;
-  console.log(angka);
+    clearArray(indexKBC);
+    fillArray(indexKBC, 0, KBCQuestions.length);
+  }
 }
 
+const uncheckAnswer = () => {
+  for (let i = 0; i < options.length; i++) {
+    options[i].classList.remove("mark-correct-option");
+    options[i].classList.remove("mark-wrong-option");
+    options[i].classList.remove("hide");
+  }
+  answerChecker.classList.remove("show-correct-answer-checker");
+  answerChecker.classList.remove("show-wrong-answer-checker");
+  footerSection.classList.remove("show-footer-section");
+}
+
+// BUTTON/SECTION EVENTS
 // If the Quiz/Game is started
 startButton.addEventListener("click",
 () => {
@@ -348,9 +384,12 @@ startButton.addEventListener("click",
   startButton.classList.add("hide");
   statusSection.classList.remove("hide");
   questionsAndOpptions.classList.remove("hide");
+  clearArray(indexKBC);
+  fillArray(indexKBC, 0, KBCQuestions.length);
   showOneQuestion();
 });
 
+// Adding Click Events for Each options
 for (let i = 0; i < options.length; i++) {
   options[i].addEventListener("click",
   () => {
@@ -366,23 +405,22 @@ for (let i = 0; i < options.length; i++) {
       answerChecker.classList.add("show-correct-answer-checker");
       answerChecker.textContent = "Correct!";
       footerSection.classList.add("show-footer-section");
+      // Add prize
       prizeIndex++;
       currentPrize = prizeList[prizeIndex];
       prizeStatus.textContent = `${rupeeSymbol}${currentPrize.toLocaleString("en-IN")}`;
+      // Check the prize
       if (prizeIndex == (prizeList.length - 1)) {
         window.alert(`YOU WON! AND GOT ${prizeList[prizeIndex].toLocaleString("en-IN")}!`);
-        prizeIndex = 0;
-        currentPrize = prizeList[prizeIndex];
-        prizeStatus.textContent = `${rupeeSymbol}${currentPrize.toLocaleString("en-IN")}`;
+        resetPrize();
+        // EDIT HERE!!!
       }
     } else {
       options[i].classList.add("mark-wrong-option");
       answerChecker.classList.add("show-wrong-answer-checker");
       answerChecker.textContent = "Wrong!";
       footerSection.classList.add("show-footer-section");
-      prizeIndex = 0;
-      currentPrize = prizeList[prizeIndex];
-      prizeStatus.textContent = `${rupeeSymbol}${currentPrize.toLocaleString("en-IN")}`;
+      resetPrize();
     }
   });
 }
@@ -390,24 +428,19 @@ for (let i = 0; i < options.length; i++) {
 // When the Next Button is clicked
 nextButton.addEventListener("click", 
   () => {
-    for (let i = 0; i < options.length; i++) {
-      options[i].classList.remove("mark-correct-option");
-      options[i].classList.remove("mark-wrong-option");
-      options[i].classList.remove("hide");
-    }
-    answerChecker.classList.remove("show-correct-answer-checker");
-    answerChecker.classList.remove("show-wrong-answer-checker");
-    footerSection.classList.remove("show-footer-section");
     showOneQuestion();
+    uncheckAnswer();
   });
 
 // When the Reset Button is clicked  
 resetButton.addEventListener("click", 
   () =>{
-    let isRestarted = confirm("Are you sure that you want to restart this quiz?");
+    let isRestarted = confirm("Are you sure you want to restart this quiz?");
     if (isRestarted) {
-      prizeIndex = 0;
-      prizeStatus.textContent = `${rupeeSymbol}${prizeList[prizeIndex].toLocaleString("en-IN")}`;
-      
+      resetPrize();
+      clearArray(indexKBC);
+      fillArray(indexKBC, 0, KBCQuestions.length);
+      showOneQuestion();
+      uncheckAnswer();
     }
   });
