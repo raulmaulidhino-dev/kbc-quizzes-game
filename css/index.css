@@ -50,14 +50,16 @@ body {
 }
 
 #main_container {
+  --quiz-container-width: clamp(20.5rem, 30vw, 43rem);
   position: relative;
   display: grid;
   place-items: center;
+  padding: calc((100vw - var(--quiz-container-width)) / 4) 0;
 }
 
 #quizz_container {
   background-color: var(--white);
-  width: clamp(20rem, 30vw, 43rem);
+  width: var(--quiz-container-width);
   padding: max(2.5rem, 3.5vw) max(0.75rem, 2vw);
   border-radius: 2rem;
   display: grid;
