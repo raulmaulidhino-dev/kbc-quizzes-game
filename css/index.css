@@ -42,7 +42,7 @@ h1 {
 
 body {
   background-color: var(--darkPurple);
-  height: 100vh;
+  min-height: 100vh;
   display: grid;
   place-items: center;
   cursor: default;
@@ -50,7 +50,7 @@ body {
 }
 
 #main_container {
-  --quiz-container-width: clamp(20.5rem, 30vw, 43rem);
+  --quiz-container-width: clamp(19.75rem, 30vw, 43rem);
   position: relative;
   display: grid;
   place-items: center;
