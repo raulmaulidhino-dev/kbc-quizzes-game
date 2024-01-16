@@ -50,7 +50,7 @@ body {
 }
 
 #main_container {
-  --quiz-container-width: clamp(19.75rem, 30vw, 43rem);
+  --quiz-container-width: clamp(19.75rem, 40vw, 43rem);
   position: relative;
   display: grid;
   place-items: center;
