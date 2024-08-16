@@ -10,6 +10,6 @@ Clone down this repository and run in your browser or you could see this project
 ## Reflection
 This self-project was made because of a request from my Indian friend, [Akkiraj1234](https://github.com/Akkiraj1234). We planned to show our skills in web development by making a simple quizz game. He asked me to make it within 1-2 weeks.
 
-One of the main challenges during this project development is Correct-Wrong and Option Randomizing Logic. I had to struggle with it for about 5-6 days to understand and implement the Logics.
+One of the main challenges during this project development was Correct-Wrong and Option Randomizing Logic. I had to struggle with it for about 5-6 days to understand and implement the Logics.
 
 The technologies implemented in this web project are HTML, CSS and JavaScript. I chose to use VanillaJS because the logics were not that hard as I think. In the future projects, I will try to learn more about JavaScript to increase the interactivity of a website.
