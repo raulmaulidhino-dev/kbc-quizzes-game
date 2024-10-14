@@ -2,7 +2,11 @@
 KBC Quizzes Game is a mini quizzes app that is originally adapted from an Indian game show named the same name, [Kaun Banega Crorepati (KBC)](https://en.wikipedia.org/wiki/Kaun_Banega_Crorepati).
 
 ## Project Screenshot(s)
-![Project Preview](https://raulmaulidhino.pages.dev/assets/kbc-quizzes-game-preview-CKmWQeaY.png)
+![KBC GAME!! Preview - Start Menu](screenshots/KBC-Game-preview-start-menu.png)
+![KBC GAME!! Preview - Answering a Question](screenshots/KBC-Game-preview-answering-a-question.png)
+![KBC GAME!! Preview - Correct Answer](screenshots/KBC-Game-preview-correct-answer.png)
+![KBC GAME!! Preview - Wrong Answer](screenshots/KBC-Game-preview-wrong-answer.png)
+![KBC GAME!! Preview - Resetting the Quiz](screenshots/KBC-Game-preview-resetting-quizz.png)
 
 ## Installation and Setup Instructions
 Clone down this repository and run in your browser or you could see this project had been deployed into vercel in [kbc-quizzes-game.vercel.app](https://kbc-quizzes-game.vercel.app).
